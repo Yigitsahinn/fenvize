@@ -3,28 +3,26 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "UpgradeData", menuName = "Scriptable Objects/UpgradeData")]
 public class UpgradeData : ScriptableObject
 {
-    
     public string upgradeName;
     public string description;
-    public UpgradeType type;
-    public int cost;
+    public PlayerStat type;
     public int maxLevel = 3;
+    public int currentLevel = 0;
     public UpgradeLevel[] levels;
 }
-public enum UpgradeType
+[System.Serializable]
+public enum PlayerStat
 {
     Damage,
     Health,
     Speed,
     CriticalChance,
     CriticalDamage,
-
 }
 [System.Serializable]
 public class UpgradeLevel
 {
-    public int level;
-    public float value; 
+    public float value;
     public int cost;
 }
 

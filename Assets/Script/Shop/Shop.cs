@@ -1,18 +1,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class Shop : MonoBehaviour
 {
     public static Shop instance;
-
     [SerializeField] private GameObject shopPanel;
+    [SerializeField] private TextMeshProUGUI coinsText;
+    [SerializeField] private TextMeshProUGUI healthText;
     private PlayerStats stats;
+    private PlayerAttackScript playerAttackScript;
     public Dictionary<PlayerStat, UpgradeData> upgradeDatas = new();
 
 
     private void Awake()
     {
+        playerAttackScript = Player.instance.GetComponent<PlayerAttackScript>();
         instance = this;
         GetUpgradeDatas();
     }
@@ -20,7 +24,6 @@ public class Shop : MonoBehaviour
     {
         stats = Player.instance.playerStats;
         shopPanel.SetActive(false);
-
     }
 
     private void GetUpgradeDatas()
@@ -36,6 +39,7 @@ public class Shop : MonoBehaviour
             {
                 Debug.LogError("Duplicate UpgradeData found for type: " + data.type);
             }
+            data.currentLevel = 0;
         }
     }
 
@@ -44,7 +48,11 @@ public class Shop : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.Escape))
         {
             shopPanel.SetActive(!shopPanel.activeSelf);
+            playerAttackScript.canAttack = !shopPanel.activeSelf;
+            playerAttackScript.canMove = !shopPanel.activeSelf;
         }
+        coinsText.text = stats.coins.ToString();
+        healthText.text = stats.health.ToString();
     }
 
     public void BuyUpgrade(PlayerStat targetStat)
@@ -68,5 +76,4 @@ public class Shop : MonoBehaviour
         upgradeData.currentLevel++;
 
     }
-
 }

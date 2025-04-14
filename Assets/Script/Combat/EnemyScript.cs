@@ -1,13 +1,17 @@
+using System.Collections;
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class EnemyScript : MonoBehaviour
 {
     [SerializeField] private EnemyData data;
-    [SerializeField] private Shop shop;
-    public float health;
+    [SerializeField] private GameObject enemyPrefab;
+    [SerializeField] private Transform spawnPoint;
+    [HideInInspector] public float health;
     [HideInInspector] public int coin;
 
-   
+
     PlayerStats stats;
 
     private void Start()
@@ -27,6 +31,7 @@ public class EnemyScript : MonoBehaviour
         coin = data.coin;
     }
 
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Sword"))
@@ -35,12 +40,19 @@ public class EnemyScript : MonoBehaviour
         }
     }
 
-    private void Death()
+    public void Death()
     {
-        if(health <= 0)
+        if (health <= 0)
         {
-            Destroy(gameObject);
+            StartCoroutine(Respawn());
             stats.coins = stats.coins + data.coin;
         }
     }
+    public IEnumerator Respawn()
+    {
+        gameObject.SetActive(false);
+        yield return new WaitForSeconds(2f);
+        gameObject.SetActive(true);
+    }
+
 }

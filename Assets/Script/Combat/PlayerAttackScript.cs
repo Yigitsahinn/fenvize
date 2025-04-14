@@ -4,7 +4,7 @@ using UnityEngine;
 public class PlayerAttackScript : MonoBehaviour
 {
     [SerializeField] private GameObject swordCollider;
-    private bool canAttack = true;
+    public bool canAttack = true;
     [HideInInspector]public bool canMove = true;
     private Animator animator;
 
@@ -18,21 +18,32 @@ public class PlayerAttackScript : MonoBehaviour
         if (canAttack == true && Input.GetKey(KeyCode.Mouse0))
         {
             StartCoroutine(Attack());
+            //StartCoroutine(AttackAnimation());
         }
     }
 
     IEnumerator Attack()
     {
+        animator.SetBool("attacking", true);
+        yield return new WaitForSeconds(0.2f);
         canAttack = false;
         canMove = false;
         swordCollider.SetActive(true);
-        animator.SetBool("attacking", true);
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.3f);
+        swordCollider.SetActive(false);
+        yield return new WaitForSeconds(0.25f);
+        animator.SetBool("attacking", false);
         canAttack = true;
         canMove = true;
-        animator.SetBool("attacking", false);
-        swordCollider.SetActive(false);
-
     }
+    //IEnumerator AttackAnimation()
+    //{
+    //    animator.SetBool("attacking", true);
+    //    yield return new WaitForSeconds(0.75f);
+    //    animator.SetBool("attacking", false);
+    //    canAttack = true;
+    //    canMove = true;
+    //}
+
 
 }

@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform model;
     [SerializeField] private float turnSpeed = 360f;
 
-    private Vector3 input;
+    public Vector3 input;
     PlayerStats stats;
     PlayerAttackScript attackScript;
     private void Awake()
@@ -32,6 +32,7 @@ public class PlayerController : MonoBehaviour
     private void GatherInput()
     {
         input = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
+        //Debug.Log(input);
     }
 
     private void Look()
